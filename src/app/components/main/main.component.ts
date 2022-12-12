@@ -23,13 +23,15 @@ export class MainComponent implements OnInit {
       this.points = data;
     });
 
-    /*this.userService.activeUser().subscribe(data => {
-      if (data == 0) {
+    this.userService.activeUser().subscribe(data => {
+      console.log(data);
+      console.log(data.numberResault == 0);
+      if (data.numberResault) {
         this.userService.username = "";
         this.userService.token = "";
         this.router.navigate(['/index']);
       }
-    });*/
+    });
   }
 
   onSubmit() {
@@ -41,5 +43,11 @@ export class MainComponent implements OnInit {
   onClear() {
     this.pointService.clear().subscribe();
     this.points = [];
+  }
+
+  onExit() {
+    this.userService.username = "";
+    this.userService.token = "";
+    this.router.navigate(['/index']);
   }
 }

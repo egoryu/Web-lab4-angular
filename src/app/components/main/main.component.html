@@ -1,7 +1,15 @@
 <table id="main-table">
   <tr>
-    <th class="title-plate">Визуализация {{userService.username}}</th>
-    <th class="title-plate">Ввод данных {{userService.token}}</th>
+    <td colspan="2">
+      <div class="login">
+        <output>{{userService.username}}</output>
+        <button id="exit" class="button" (click)="onExit()"> Logout </button>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th class="title-plate">Визуализация</th>
+    <th class="title-plate">Ввод данных</th>
   </tr>
   <tr>
     <td class="image-container">

@@ -23,11 +23,8 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-  }
-
-  goHome(){
-    this.router.navigate(['/main']);
+    this.userService.username = "";
+    this.userService.token = "";
   }
 
   onRegister(): void {
@@ -36,9 +33,9 @@ export class IndexComponent implements OnInit {
 
   goMainLogin(): void {
     this.userService.checkUser(new User(this.login, this.password, "", "")).subscribe(data => {
-      this.userService.token = data;
-      this.userService.username = this.login;
-      if (this.userService.token !== "") {
+      if (data != null) {
+        this.userService.token = data.result;
+        this.userService.username = this.login;
         this.router.navigate(['/main']);
       }
     });
@@ -46,9 +43,9 @@ export class IndexComponent implements OnInit {
 
   goMainRegistration(): void {
     this.userService.registration(new User(this.login, this.password, "", "")).subscribe(data => {
-      this.userService.token = data;
-      this.userService.username = this.login;
-      if (this.userService.token !== "") {
+      if (data != null) {
+        this.userService.token = data.result;
+        this.userService.username = this.login;
         this.router.navigate(['/main']);
       }
     });
