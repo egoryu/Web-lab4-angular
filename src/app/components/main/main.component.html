@@ -1,0 +1,87 @@
+<table id="main-table">
+  <tr>
+    <th class="title-plate">Визуализация {{userService.username}}</th>
+    <th class="title-plate">Ввод данных {{userService.token}}</th>
+  </tr>
+  <tr>
+    <td class="image-container">
+      <canvas id="plot" width="320" height="320">Интерактивная область графика</canvas>
+    </td>
+    <td class="content-plate">
+      <form id="former" #userForm="ngForm">
+        <table id="input-grid">
+          <tr>
+            <td>
+              Введите X:{{point.x}}
+            </td>
+            <td>
+              <div class="slide-container">
+                <input type="range" min="-5" max="3" value="0" step="0.1" class="slider" id="myRangeX" [(ngModel)]="point.x" name="x">
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Введите Y:{{point.y}}
+            </td>
+            <td>
+              <div class="slide-container">
+                <input type="range" min="-5" max="5" value="0" step="0.1" class="slider" id="myRangeY" [(ngModel)]="point.y" name="y">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Выберите R:{{point.r}}
+            </td>
+
+            <td>
+              <div class="slide-container">
+                <input type="range" min="-5" max="3" value="0" step="1" class="slider" id="myRangeZ" [(ngModel)]="point.r" name="r">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button id="send" class="button sender" value="submit" (click)="onSubmit()"> Submit </button>
+            </td>
+            <td>
+              <button id="clear" class="button" value="clear" (click)="onClear()"> Clear </button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span class="text-error invisible" id="error"></span>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </td>
+  </tr>
+  <tr>
+    <th class="title-plate" colspan="2">Результат</th>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <table class="result-table">
+        <thead>
+        <tr>
+          <th>X</th>
+          <th>Y</th>
+          <th>R</th>
+          <th>Hit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let point of points">
+          <td>{{ point.x }}</td>
+          <td>{{ point.y }}</td>
+          <td>{{ point.r }}</td>
+          <td>{{ point.hit }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>

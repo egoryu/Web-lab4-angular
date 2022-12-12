@@ -1,0 +1,35 @@
+<div>
+  {{login}}
+  <form *ngIf="!isRegister">
+    <h3>Вход</h3>
+    <div>
+      <input type="text" placeholder="Введите имя" [(ngModel)]="login" name="login" maxlength="10" autocomplete="off">
+      <br>
+      <br>
+      <input type="password" placeholder="Введите пароль" [(ngModel)]="password" name="password" maxlength="10" autocomplete="off">
+      <br>
+      <br>
+      <button type="button" (click)="onRegister()">К регистрации</button>
+      <div><br></div>
+      <button type="button" (click)="goMainLogin()">Вход</button>
+    </div>
+  </form>
+
+  <form *ngIf="isRegister">
+    <h3>Регистрация</h3>
+    <div>
+      <input type="text" placeholder="Введите имя" [(ngModel)]="login" name="login" maxlength="10" autocomplete="off">
+      <br>
+      <br>
+      <input type="password" placeholder="Введите пароль" [(ngModel)]="password" name="password" maxlength="10" autocomplete="off">
+      <br>
+      <br>
+      <input type="password" placeholder="Повторите пароль" [(ngModel)]="password2" name="password2" maxlength="10" autocomplete="off">
+      <br>
+      <br>
+      <button type="button" (click)="onRegister()">К входу</button>
+      <div><br></div>
+      <button type="button" (click)="goMainRegistration()">Зарегистрироваться</button>
+    </div>
+  </form>
+</div>
