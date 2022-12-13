@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Point } from 'src/app/models/point/point';
 import { PointService } from 'src/app/services/point/point.service';
@@ -21,7 +21,7 @@ export class MainComponent implements OnInit {
 
   private ctx!: CanvasRenderingContext2D;
 
-  constructor(private router: Router, public pointService: PointService, private userService: UserService) {
+  constructor(private router: Router, private pointService: PointService, private userService: UserService) {
     this.points = [];
     this.point = new Point();
     this.name = this.pointService.username;
@@ -72,6 +72,8 @@ export class MainComponent implements OnInit {
   onExit() {
     this.pointService.username = "";
     this.pointService.token = "";
+    localStorage.removeItem("login");
+    localStorage.removeItem("token");
     this.router.navigate(['/index']);
   }
 
@@ -208,7 +210,7 @@ export class MainComponent implements OnInit {
 
     if (this.point.r <= 0)
       return;
-    
+
     let xFromCanvas = (event.offsetX - 160) / 150 * this.point.r;
     let minDifference = Infinity;
     let nearestXValue;

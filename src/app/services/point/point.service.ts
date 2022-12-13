@@ -17,6 +17,14 @@ export class PointService {
     this.activeUrl = 'http://localhost:8080/active';
     this.username = "";
     this.token = "";
+    // @ts-ignore
+    this.username = localStorage.getItem("login");
+    // @ts-ignore
+    this.token = localStorage.getItem("token");
+    if (this.username == null || this.token == null) {
+      this.username = "";
+      this.token = "";
+    }
   }
 
   public findAll(): Observable<Point[]> {

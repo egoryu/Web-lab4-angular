@@ -36,8 +36,7 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /*this.pointSevice.username = "";
-    this.pointSevice.token = "";*/
+
   }
 
   onRegister(): void {
@@ -77,6 +76,8 @@ export class IndexComponent implements OnInit {
       if (data != null) {
         this.pointSevice.token = data.result;
         this.pointSevice.username = this.login;
+        localStorage.setItem("login", this.login);
+        localStorage.setItem("token", data.result);
         this.router.navigate(['/main']);
         this.isLoginError = true;
       } else {
@@ -91,6 +92,8 @@ export class IndexComponent implements OnInit {
       if (data != null) {
         this.pointSevice.token = data.result;
         this.pointSevice.username = this.login;
+        localStorage.setItem("login", this.login);
+        localStorage.setItem("token", data.result);
         this.router.navigate(['/main']);
         this.isRegisterError = true;
       } else {
