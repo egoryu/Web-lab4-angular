@@ -2,20 +2,24 @@
   <tr>
     <td colspan="2">
       <div class="login">
-        <output>{{userService.username}}</output>
+        <output>{{name}}</output>
         <button id="exit" class="button" (click)="onExit()"> Logout </button>
       </div>
     </td>
   </tr>
   <tr>
     <th class="title-plate">Визуализация</th>
+  </tr>
+  <tr>
+    <td class="image-container" colspan="2">
+      <canvas id="plot" width="320" height="320" #canvas>Интерактивная область графика</canvas>
+    </td>
+  </tr>
+  <tr>
     <th class="title-plate">Ввод данных</th>
   </tr>
   <tr>
-    <td class="image-container">
-      <canvas id="plot" width="320" height="320">Интерактивная область графика</canvas>
-    </td>
-    <td class="content-plate">
+    <td class="content-plate" colspan="2">
       <form id="former" #userForm="ngForm">
         <table id="input-grid">
           <tr>
@@ -46,7 +50,7 @@
 
             <td>
               <div class="slide-container">
-                <input type="range" min="-5" max="3" value="0" step="1" class="slider" id="myRangeZ" [(ngModel)]="point.r" name="r">
+                <input type="range" min="-5" max="3" value="0" step="1" class="slider" id="myRangeZ" [(ngModel)]="point.r" name="r" (change)="loadTablePoints()">
               </div>
             </td>
           </tr>
@@ -60,7 +64,8 @@
           </tr>
           <tr>
             <td colspan="2">
-              <span class="text-error invisible" id="error"></span>
+              <div [hidden]="isValid" class="text-error">Не корректный ввод</div>
+              <div [hidden]="isValidR" class="text-error">Не корректный радиус</div>
             </td>
           </tr>
         </table>

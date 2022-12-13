@@ -21,6 +21,7 @@ body {
 .content-plate {
   padding: 0 0 2%;
   vertical-align: center;
+  horiz-align: center;
   background-origin: border-box;
 }
 
@@ -81,7 +82,7 @@ input[type=radio]{
 
 .button {
   height: 27px;
-  width: 70px;
+  width: 90px;
   font-family: "Open Sans", "Arial", sans-serif;
   color: #ffffff;
   background-color: #FFD400FF;

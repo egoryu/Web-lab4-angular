@@ -1,35 +1,46 @@
-<div>
-  {{login}}
+<div class="content-plate">
   <form *ngIf="!isRegister">
     <h3>Вход</h3>
     <div>
-      <input type="text" placeholder="Введите имя" [(ngModel)]="login" name="login" maxlength="10" autocomplete="off">
+      <input type="text" placeholder="Введите имя" [(ngModel)]="login" name="login" maxlength="10" autocomplete="off" (input)="onUsername()">
       <br>
+      <div [hidden]="isUsername" class="text-error">Не введено имя</div>
       <br>
-      <input type="password" placeholder="Введите пароль" [(ngModel)]="password" name="password" maxlength="10" autocomplete="off">
+      <input type="password" placeholder="Введите пароль" [(ngModel)]="password" name="password" maxlength="10" autocomplete="off" (input)="onPassword()">
       <br>
+      <div [hidden]="isPassword" class="text-error">Не введен пароль</div>
       <br>
-      <button type="button" (click)="onRegister()">К регистрации</button>
+      <button type="button" class="button" (click)="onRegister()">Регистрация</button>
       <div><br></div>
-      <button type="button" (click)="goMainLogin()">Вход</button>
+      <button type="button" class="button" (click)="goMainLogin()">Вход</button>
+      <div><br></div>
+      <div [hidden]="isLoginError" class="text-error">Не правильный логин или пароль</div>
+      <div [hidden]="isRegisterError" class="text-error">Пользователь уже существует</div>
     </div>
   </form>
 
   <form *ngIf="isRegister">
     <h3>Регистрация</h3>
     <div>
-      <input type="text" placeholder="Введите имя" [(ngModel)]="login" name="login" maxlength="10" autocomplete="off">
+      <input type="text" placeholder="Введите имя" [(ngModel)]="login" name="login" maxlength="10" autocomplete="off" (input)="onUsername()">
       <br>
+      <div [hidden]="isUsername" class="text-error">Не введено имя</div>
       <br>
-      <input type="password" placeholder="Введите пароль" [(ngModel)]="password" name="password" maxlength="10" autocomplete="off">
+      <input type="password" placeholder="Введите пароль" [(ngModel)]="password" name="password" maxlength="10" autocomplete="off" (input)="onPassword()" (change)="onEqualPassword()">
       <br>
+      <div [hidden]="isPassword" class="text-error">Не введен пароль</div>
       <br>
-      <input type="password" placeholder="Повторите пароль" [(ngModel)]="password2" name="password2" maxlength="10" autocomplete="off">
+      <input type="password" placeholder="Повторите пароль" [(ngModel)]="password2" name="password2" maxlength="10" autocomplete="off" (input)="onPassword2()" (change)="onEqualPassword()">
       <br>
+      <div [hidden]="isPassword2" class="text-error">Не введен пароль-2</div>
+      <div [hidden]="isEqualPassword" class="text-error">Разные пароли</div>
       <br>
-      <button type="button" (click)="onRegister()">К входу</button>
+      <button type="button" class="button" (click)="onRegister()">К входу</button>
       <div><br></div>
-      <button type="button" (click)="goMainRegistration()">Зарегистрироваться</button>
+      <button type="button" class="button" (click)="goMainRegistration()">Зарегистрироваться</button>
+      <div><br></div>
+      <div [hidden]="isLoginError" class="text-error">Не правильный логин или пароль</div>
+      <div [hidden]="isRegisterError" class="text-error">Пользователь уже существует</div>
     </div>
   </form>
 </div>
