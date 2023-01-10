@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import { User } from 'src/app/models/user/user';
+import { RequestUser } from 'src/app/models/request/request-user';
 import { PointService } from 'src/app/services/point/point.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -72,12 +72,12 @@ export class IndexComponent implements OnInit {
   }
 
   goMainLogin(): void {
-    this.userService.checkUser(new User(this.login, this.password, "", "")).subscribe(data => {
+    this.userService.checkUser(new RequestUser(this.login, this.password)).subscribe(data => {
       if (data != null) {
-        this.pointSevice.token = data.result;
+        this.pointSevice.token = data.answer;
         this.pointSevice.username = this.login;
         localStorage.setItem("login", this.login);
-        localStorage.setItem("token", data.result);
+        localStorage.setItem("token", data.answer);
         this.router.navigate(['/main']);
         this.isLoginError = true;
       } else {
@@ -88,12 +88,12 @@ export class IndexComponent implements OnInit {
   }
 
   goMainRegistration(): void {
-    this.userService.registration(new User(this.login, this.password, "", "")).subscribe(data => {
+    this.userService.registration(new RequestUser(this.login, this.password)).subscribe(data => {
       if (data != null) {
-        this.pointSevice.token = data.result;
+        this.pointSevice.token = data.answer;
         this.pointSevice.username = this.login;
         localStorage.setItem("login", this.login);
-        localStorage.setItem("token", data.result);
+        localStorage.setItem("token", data.answer);
         this.router.navigate(['/main']);
         this.isRegisterError = true;
       } else {

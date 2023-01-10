@@ -3,7 +3,9 @@
     <td colspan="2">
       <div class="login">
         <output>{{name}}</output>
-        <button id="exit" class="button" (click)="onExit()"> Logout </button>
+        <br>
+        <br>
+        <p-button id="exit" icon="pi pi-sign-out" label="Logout" class="button" (click)="onExit()"> </p-button>
       </div>
     </td>
   </tr>
@@ -20,7 +22,7 @@
   </tr>
   <tr>
     <td class="content-plate" colspan="2">
-      <form id="former" #userForm="ngForm">
+      <form id="former">
         <table id="input-grid">
           <tr>
             <td>
@@ -28,7 +30,7 @@
             </td>
             <td>
               <div class="slide-container">
-                <input type="range" min="-5" max="3" value="0" step="0.1" class="slider" id="myRangeX" [(ngModel)]="point.x" name="x">
+                <p-slider [min]="-5" [max]="3" [step]="0.1" [(ngModel)]="point.x" name="x" class="p-slider"></p-slider>
               </div>
             </td>
           </tr>
@@ -39,7 +41,7 @@
             </td>
             <td>
               <div class="slide-container">
-                <input type="range" min="-5" max="5" value="0" step="0.1" class="slider" id="myRangeY" [(ngModel)]="point.y" name="y">
+                <p-slider [min]="-5" [max]="5" [step]="0.1" [(ngModel)]="point.y" name="y" class="p-slider"></p-slider>
               </div>
             </td>
           </tr>
@@ -50,16 +52,16 @@
 
             <td>
               <div class="slide-container">
-                <input type="range" min="-5" max="3" value="0" step="1" class="slider" id="myRangeZ" [(ngModel)]="point.r" name="r" (change)="loadTablePoints()">
+                <p-slider [min]="-5" [max]="3" [step]="1" [(ngModel)]="point.r" name="r" class="p-slider" (onChange)="loadTablePoints()"></p-slider>
               </div>
             </td>
           </tr>
           <tr>
             <td>
-              <button id="send" class="button sender" value="submit" (click)="onSubmit()"> Submit </button>
+              <p-button id="send" icon="pi pi-check-circle" label="Submit" class="button sender" value="submit" (click)="onSubmit()"> </p-button>
             </td>
             <td>
-              <button id="clear" class="button" value="clear" (click)="onClear()"> Clear </button>
+              <p-button id="clear" icon="pi pi-trash" label="Clear" class="button" value="clear" (click)="onClear()"> </p-button>
             </td>
           </tr>
           <tr>
@@ -77,24 +79,24 @@
   </tr>
   <tr>
     <td colspan="2">
-      <table class="result-table">
-        <thead>
-        <tr>
-          <th>X</th>
-          <th>Y</th>
-          <th>R</th>
-          <th>Hit</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let point of points">
-          <td>{{ point.x }}</td>
-          <td>{{ point.y }}</td>
-          <td>{{ point.r }}</td>
-          <td>{{ point.hit }}</td>
-        </tr>
-        </tbody>
-      </table>
+      <p-table [value]="points" [scrollable]="true" scrollHeight="400px">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="x">X <p-sortIcon></p-sortIcon></th>
+            <th pSortableColumn="y">Y <p-sortIcon></p-sortIcon></th>
+            <th pSortableColumn="r">R <p-sortIcon></p-sortIcon></th>
+            <th pSortableColumn="h">Hit <p-sortIcon></p-sortIcon></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data sortMode="multiple">
+          <tr>
+            <td>{{ data.x }}</td>
+            <td>{{ data.y }}</td>
+            <td>{{ data.r }}</td>
+            <td>{{ data.h }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </td>
   </tr>
 </table>

@@ -1,3 +1,4 @@
+
 /* You can add global styles to this file, and also import other style files */
 body {
   font-size: 16px;
@@ -82,7 +83,7 @@ input[type=radio]{
 
 .button {
   height: 27px;
-  width: 90px;
+  width: 120px;
   font-family: "Open Sans", "Arial", sans-serif;
   color: #ffffff;
   background-color: #FFD400FF;
@@ -192,4 +193,18 @@ input[type=radio]{
 
 .r-hide {
   border: 1px #a25fd0;
+}
+
+.login-plate {
+  width: 95%;
+  margin: auto;
+  text-align: center;
+  border-spacing: 15px;
+}
+
+.login {
+  width: 95%;
+  margin: auto;
+  text-align: right;
+  border-spacing: 15px;
 }

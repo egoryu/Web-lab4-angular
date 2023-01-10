@@ -9,6 +9,15 @@ import { IndexComponent } from './components/index/index.component';
 import { MainComponent } from './components/main/main.component';
 import { PointService } from './services/point/point.service';
 import { UserService } from './services/user/user.service';
+import { httpInterceptorProviders } from './services/http-request-interceptor';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AccordionModule } from 'primeng/accordion';
+import { SliderModule } from 'primeng/slider';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
 
 const appRoutes: Routes = [
   {path: "", component:IndexComponent},
@@ -25,9 +34,16 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    BrowserAnimationsModule,
+    AccordionModule,
+    SliderModule,
+    PasswordModule,
+    InputTextModule,
+    ButtonModule,
+    TableModule
   ],
-  providers: [PointService, UserService],
+  providers: [PointService, UserService, httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

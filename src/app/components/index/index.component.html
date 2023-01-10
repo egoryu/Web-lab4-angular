@@ -1,18 +1,24 @@
-<div class="content-plate">
+<div class="login-plate">
   <form *ngIf="!isRegister">
-    <h3>Вход</h3>
+    <h2>Вход</h2>
     <div>
-      <input type="text" placeholder="Введите имя" [(ngModel)]="login" name="login" maxlength="10" autocomplete="off" (input)="onUsername()">
+      <span class="p-float-label" style="display: unset">
+        <input type="text" id="float-input" pInputText [(ngModel)]="login" name="login" maxlength="10" autocomplete="off" (input)="onUsername()">
+        <label for="float-input">Логин</label>
+      </span>
       <br>
       <div [hidden]="isUsername" class="text-error">Не введено имя</div>
       <br>
-      <input type="password" placeholder="Введите пароль" [(ngModel)]="password" name="password" maxlength="10" autocomplete="off" (input)="onPassword()">
+      <span class="p-float-label" style="display: unset">
+        <p-password id="ps-log1" [(ngModel)]="password" [toggleMask]="true" name="password" maxlength="16" (input)="onPassword()" (change)="onEqualPassword()"></p-password>
+        <label for="ps-log1">Введите пароль</label>
+      </span>
       <br>
       <div [hidden]="isPassword" class="text-error">Не введен пароль</div>
       <br>
-      <button type="button" class="button" (click)="onRegister()">Регистрация</button>
+      <p-button icon="pi pi-chevron-circle-right" label="Регистрация" (click)="onRegister()"></p-button>
       <div><br></div>
-      <button type="button" class="button" (click)="goMainLogin()">Вход</button>
+      <p-button icon="pi pi-sign-in" label="Вход" class="button" (click)="goMainLogin()"></p-button>
       <div><br></div>
       <div [hidden]="isLoginError" class="text-error">Не правильный логин или пароль</div>
       <div [hidden]="isRegisterError" class="text-error">Пользователь уже существует</div>
@@ -20,24 +26,34 @@
   </form>
 
   <form *ngIf="isRegister">
-    <h3>Регистрация</h3>
+    <h2>Регистрация</h2>
     <div>
-      <input type="text" placeholder="Введите имя" [(ngModel)]="login" name="login" maxlength="10" autocomplete="off" (input)="onUsername()">
+      <span class="p-float-label" style="display: unset">
+        <input type="text" id="float-input-1" pInputText [(ngModel)]="login" name="login" maxlength="10" autocomplete="off" (input)="onUsername()">
+        <label for="float-input-1">Логин</label>
+      </span>
       <br>
       <div [hidden]="isUsername" class="text-error">Не введено имя</div>
       <br>
-      <input type="password" placeholder="Введите пароль" [(ngModel)]="password" name="password" maxlength="10" autocomplete="off" (input)="onPassword()" (change)="onEqualPassword()">
+      <span class="p-float-label" style="display: unset">
+        <p-password id="ps-reg1" [(ngModel)]="password" [toggleMask]="true" name="password" maxlength="16" (input)="onPassword()" (change)="onEqualPassword()"></p-password>
+        <label for="ps-reg1">Введите пароль</label>
+      </span>
       <br>
       <div [hidden]="isPassword" class="text-error">Не введен пароль</div>
       <br>
-      <input type="password" placeholder="Повторите пароль" [(ngModel)]="password2" name="password2" maxlength="10" autocomplete="off" (input)="onPassword2()" (change)="onEqualPassword()">
+      <span class="p-float-label" style="display: unset">
+        <p-password id="ps-reg2" [(ngModel)]="password2" [toggleMask]="true" [feedback]="false" name="password2" maxlength="16" (input)="onPassword2()" (change)="onEqualPassword()"></p-password>
+        <label for="ps-reg2">Повторите пароль</label>
+      </span>
+      <br>
       <br>
       <div [hidden]="isPassword2" class="text-error">Не введен пароль-2</div>
       <div [hidden]="isEqualPassword" class="text-error">Разные пароли</div>
       <br>
-      <button type="button" class="button" (click)="onRegister()">К входу</button>
+      <p-button type="button" icon="pi pi-chevron-circle-right" label="К входу" class="button" (click)="onRegister()"></p-button>
       <div><br></div>
-      <button type="button" class="button" (click)="goMainRegistration()">Зарегистрироваться</button>
+      <p-button type="button" icon="pi pi-user-plus" label="Зарегистрировать" class="button" (click)="goMainRegistration()"></p-button>
       <div><br></div>
       <div [hidden]="isLoginError" class="text-error">Не правильный логин или пароль</div>
       <div [hidden]="isRegisterError" class="text-error">Пользователь уже существует</div>

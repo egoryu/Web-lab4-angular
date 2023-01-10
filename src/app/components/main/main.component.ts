@@ -1,8 +1,12 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Point } from 'src/app/models/point/point';
+
+import { RequestPoint } from 'src/app/models/request/request-point';
+import { ResponsePoint } from 'src/app/models/response/response-point';
 import { PointService } from 'src/app/services/point/point.service';
 import { UserService } from 'src/app/services/user/user.service';
+
+import {SliderModule} from 'primeng/slider';
 
 @Component({
   selector: 'app-main',
@@ -13,8 +17,8 @@ export class MainComponent implements OnInit {
   @ViewChild('canvas', {static: true})
   canvas!: ElementRef<HTMLCanvasElement>;
 
-  points: Point[];
-  point: Point;
+  points: ResponsePoint[];
+  point: RequestPoint;
   name: string;
   isValid: boolean;
   isValidR: boolean;
@@ -23,22 +27,22 @@ export class MainComponent implements OnInit {
 
   constructor(private router: Router, private pointService: PointService, private userService: UserService) {
     this.points = [];
-    this.point = new Point();
     this.name = this.pointService.username;
+    this.point = new RequestPoint(this.pointService.username, 0, 0, 0);
     this.isValid = true;
     this.isValidR = true;
+
   }
 
   ngOnInit(): void {
     this.pointService.findAll().subscribe(data => {
       this.points = data;
-    });
-
-    this.pointService.activeUser().subscribe(data => {
-      console.log(data)
-      if (data === null) {
+    }, error => {
+      if (error.status == 401) {
         this.pointService.username = "";
         this.pointService.token = "";
+        localStorage.removeItem("login");
+        localStorage.removeItem("token");
         this.router.navigate(['/index']);
       }
     });
@@ -53,33 +57,77 @@ export class MainComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.valid() == false) {
+      this.isValid = false;
+      return;
+    }
     this.pointService.save(this.point).subscribe( data => {
       if (data != null) {
+        if (this.points == null)
+          this.points = [];
         this.points.push(data);
         this.loadTablePoints();
         this.isValid = true;
       } else {
         this.isValid = false;
       }
+    }, error => {
+      if (error.status == 401) {
+        this.pointService.username = "";
+        this.pointService.token = "";
+        localStorage.removeItem("login");
+        localStorage.removeItem("token");
+        this.router.navigate(['/index']);
+      }
     });
   }
 
   onClear() {
-    this.pointService.clear().subscribe();
-    this.points = [];
+    this.pointService.clear().subscribe(data => {
+      if (data != null && data.answer == "successful") {
+        this.points = [];
+        this.loadTablePoints();
+      }
+    }, error => {
+      if (error.status == 401) {
+        this.pointService.username = "";
+        this.pointService.token = "";
+        localStorage.removeItem("login");
+        localStorage.removeItem("token");
+        this.router.navigate(['/index']);
+      }
+    });
   }
 
   onExit() {
-    this.pointService.username = "";
-    this.pointService.token = "";
-    localStorage.removeItem("login");
-    localStorage.removeItem("token");
-    this.router.navigate(['/index']);
+    this.userService.logout(this.pointService.token).subscribe(data => {
+      this.pointService.username = "";
+      this.pointService.token = "";
+      localStorage.removeItem("login");
+      localStorage.removeItem("token");
+      this.router.navigate(['/index']);
+    }, error => {
+      this.pointService.username = "";
+      this.pointService.token = "";
+      localStorage.removeItem("login");
+      localStorage.removeItem("token");
+      this.router.navigate(['/index']);
+    })
+  }
+
+  //valid
+
+  valid(): boolean {
+    if (this.point.x <= -5 || this.point.x >= 3 || this.point.y <= -5 || this.point.y >= 5)
+      return false;
+    return true;
   }
 
   //canvas
 
   drawPlot(ctx: CanvasRenderingContext2D) {
+    this.canvas.nativeElement.width = 320;
+    this.canvas.nativeElement.height = 320;
     let width = 320,
       high = 320;
 
@@ -191,7 +239,7 @@ export class MainComponent implements OnInit {
     this.ctx.clearRect(0, 0, 320, 320);
   }
 
-  drawPoint(x: number, y: number, r: number, h: number) {
+  drawPoint(x: number, y: number, r: number, h: string) {
     if (this.point.r !== r)
       return;
 
@@ -199,7 +247,7 @@ export class MainComponent implements OnInit {
       return;
 
     this.ctx.beginPath();
-    this.ctx.fillStyle = h == 0 ? 'red' : 'green';
+    this.ctx.fillStyle = h == "miss" ? 'red' : 'green';
     this.ctx.arc(x, y, 2, 0, 2 * Math.PI);
     this.ctx.fill();
   }
@@ -224,7 +272,7 @@ export class MainComponent implements OnInit {
 
     this.point.y = parseFloat(yValue.toFixed(1));
 
-    this.drawPoint(this.point.x * 150 / this.point.r + 160, -(yValue / this.point.r *  150 - 160), this.point.r, 0);
+    this.drawPoint(this.point.x * 150 / this.point.r + 160, -(yValue / this.point.r *  150 - 160), this.point.r, "miss");
     this.onSubmit();
   }
 
@@ -232,7 +280,7 @@ export class MainComponent implements OnInit {
     this.clearCanvas();
     this.drawPlot(this.ctx);
 
-    if (this.point.r <= 0) {
+    if (this.point.r <= 0 || this.point.r > 3) {
       this.isValidR = false;
       return;
     } else {
@@ -240,11 +288,17 @@ export class MainComponent implements OnInit {
       this.isValid =true;
     }
 
+    if (this.points == null)
+      return;
     for (let x of this.points) {
       if (x.r == this.point.r)
-        this.drawPoint(x.x  * 150 / x.r + 160, -(x.y / x.r * 150 - 160), x.r, x.hit);
+        this.drawPoint(x.x  * 150 / x.r + 160, -(x.y / x.r * 150 - 160), x.r, x.h);
     }
   }
 }
 
+
+function valid() {
+    throw new Error('Function not implemented.');
+}
 

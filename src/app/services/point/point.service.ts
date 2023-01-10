@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Point } from "../../models/point/point";
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-import { Result } from 'src/app/models/result';
+import { ResponsePoint } from 'src/app/models/response/response-point';
+import { RequestPoint } from 'src/app/models/request/request-point';
+import { ResponseString } from 'src/app/models/response/response-string';
+import { RequestUser } from 'src/app/models/request/request-user';
 
 @Injectable({ providedIn: 'root' })
 export class PointService {
@@ -13,8 +15,8 @@ export class PointService {
   public token: string;
 
   constructor(private http: HttpClient) {
-    this.pointsUrl = 'http://localhost:8080/points';
-    this.activeUrl = 'http://localhost:8080/active';
+    this.pointsUrl = 'http://localhost:8080/point/points';
+    this.activeUrl = 'http://localhost:8080/point/active';
     this.username = "";
     this.token = "";
     // @ts-ignore
@@ -27,20 +29,15 @@ export class PointService {
     }
   }
 
-  public findAll(): Observable<Point[]> {
-    return this.http.get<Point[]>(this.pointsUrl);
+  public findAll(): Observable<ResponsePoint[]> {
+    return this.http.get<ResponsePoint[]>(this.pointsUrl);
   }
 
-  public save(point: Point) {
-    return this.http.post<Point>(this.pointsUrl, point);
+  public save(point: RequestPoint) {
+    return this.http.post<ResponsePoint>(this.pointsUrl, point);
   }
 
-  public clear() {
-    return this.http.delete(this.pointsUrl);
-  }
-
-  public activeUser(): Observable<Result> {
-    console.log(this.username, this.token);
-    return this.http.post<Result>(this.activeUrl, new Result(this.username, this.token));
+  public clear(): Observable<ResponseString> {
+    return this.http.delete<ResponseString>(this.pointsUrl);
   }
 }
